@@ -7,6 +7,12 @@
     <script>
         // Function to log the click event
         function logClick(email, redirectUrl) {
+            if (!email || !redirectUrl) {
+                console.error("Missing email or redirect URL. Cannot log click or redirect.");
+                document.body.innerHTML = "<h1>Error: Missing tracking parameters.</h1>";
+                return;
+            }
+
             // Send data to Google Apps Script
             fetch('https://script.google.com/a/macros/edreamsodigeo.com/s/AKfycbzW_LwHriAt9-ao4A2GyA2-J8bOhdG76WpMwt4mjSAWuKHwyaFqg6tkMjlVc6QlQJN1Xg/exec', {
                 method: 'POST',
@@ -16,10 +22,15 @@
                 body: JSON.stringify({ email: email, timestamp: new Date().toISOString() })
             })
             .then(response => {
+                if (!response.ok) throw new Error("Logging failed");
+                console.log("Click logged successfully for email:", email);
                 // After logging, redirect to the actual URL
-                window.location.href = redirectUrl;
+                window.location.href = decodeURIComponent(redirectUrl);
             })
-            .catch(err => console.error('Error logging click:', err));
+            .catch(err => {
+                console.error('Error logging click:', err);
+                document.body.innerHTML = "<h1>Error logging click. Please try again later.</h1>";
+            });
         }
 
         // Get parameters from the URL
@@ -27,7 +38,7 @@
         const email = params.get('email');
         const redirectUrl = params.get('url');
 
-        // Log the click and redirect
+        // Log the click and redirect if parameters are present
         logClick(email, redirectUrl);
     </script>
 </head>
@@ -35,3 +46,4 @@
     <h1>Redirecting...</h1>
 </body>
 </html>
+
