@@ -5,45 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tracking Redirect</title>
     <script>
-        // Function to log the click event
-        function logClick(email, redirectUrl) {
-            if (!email || !redirectUrl) {
-                console.error("Missing email or redirect URL. Cannot log click or redirect.");
-                document.body.innerHTML = "<h1>Error: Missing tracking parameters.</h1>";
-                return;
-            }
-
-            // Send data to Google Apps Script
-            fetch('https://script.google.com/a/macros/edreamsodigeo.com/s/AKfycbzW_LwHriAt9-ao4A2GyA2-J8bOhdG76WpMwt4mjSAWuKHwyaFqg6tkMjlVc6QlQJN1Xg/exec', {
+        function logClickAndRedirect(email, redirectUrl) {
+            // Log the click data to Google Apps Script
+            fetch('https://script.google.com/a/macros/edreamsodigeo.com/s/AKfycbxXHPOOqk6lTXQKhGWtEUC-TUiyBc_thJBHljwrpQbwxRtulKRma461tCPmLJhqy5Hm/exec', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email: email, timestamp: new Date().toISOString() })
+                body: JSON.stringify({
+                    email: email,
+                    timestamp: new Date().toISOString(),
+                    link: redirectUrl
+                })
             })
-            .then(response => {
-                if (!response.ok) throw new Error("Logging failed");
-                console.log("Click logged successfully for email:", email);
-                // After logging, redirect to the actual URL
-                window.location.href = decodeURIComponent(redirectUrl);
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Redirect to the actual target URL
+                    window.location.href = redirectUrl;
+                } else {
+                    console.error('Error logging click:', data);
+                }
             })
-            .catch(err => {
-                console.error('Error logging click:', err);
-                document.body.innerHTML = "<h1>Error logging click. Please try again later.</h1>";
-            });
+            .catch(err => console.error('Error logging click:', err));
         }
 
-        // Get parameters from the URL
+        // Extract email and URL parameters from the URL
         const params = new URLSearchParams(window.location.search);
         const email = params.get('email');
         const redirectUrl = params.get('url');
 
-        // Log the click and redirect if parameters are present
-        logClick(email, redirectUrl);
+        // Log the click and redirect if both email and URL are available
+        if (email && redirectUrl) {
+            logClickAndRedirect(email, redirectUrl);
+        } else {
+            console.error('Missing email or redirect URL');
+        }
     </script>
 </head>
 <body>
     <h1>Redirecting...</h1>
 </body>
 </html>
+
 
