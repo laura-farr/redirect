@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tracking Redirect</title>
     <style>
-        /* Set the background color to #10acfc and remove any default margin */
         body {
-            background-color: #10acfc;
-            margin: 0;
-            height: 100vh; /* Make the body full height */
-            display: flex; /* Center content */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
+            background-color: #10acfc; /* Change background color */
+            color: white; /* Optional: text color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Center vertically */
+            margin: 0; /* Remove default margin */
+            font-family: Arial, sans-serif; /* Optional: font style */
         }
     </style>
     <script>
@@ -20,14 +21,19 @@
         async function logClick(email, redirectUrl) {
             try {
                 // Send data to Google Apps Script
-                await fetch('https://script.google.com/a/macros/edreamsodigeo.com/s/AKfycbyCs54oS1GJZYNz3P9UGeJb0D9TJCP5a7KoUQuCA9Ky4RCl-lh8Tlw3mNzt5wUXiv_c/exec', {
+                const response = await fetch('https://script.google.com/a/macros/edreamsodigeo.com/s/AKfycbyCs54oS1GJZYNz3P9UGeJb0D9TJCP5a7KoUQuCA9Ky4RCl-lh8Tlw3mNzt5wUXiv_c/exec', {
                     method: 'POST',
-                    mode: 'no-cors',  // Bypasses CORS restrictions
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ email: email, timestamp: new Date().toISOString(), url: redirectUrl })
                 });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                console.log('Click logged successfully.');
             } catch (err) {
                 console.error('Error logging click:', err);
             } finally {
@@ -46,6 +52,6 @@
     </script>
 </head>
 <body>
-    <!-- No text is displayed, just the background color -->
+    <h1>Redirecting...</h1>
 </body>
 </html>
