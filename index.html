@@ -4,26 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tracking Redirect</title>
+    <style>
+        /* Set the background color to #10acfc and remove any default margin */
+        body {
+            background-color: #10acfc;
+            margin: 0;
+            height: 100vh; /* Make the body full height */
+            display: flex; /* Center content */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+    </style>
     <script>
         // Function to log the click event
-
-function logClick(email, redirectUrl) {
-    // Send data to Google Apps Script
-    fetch('https://script.google.com/a/macros/edreamsodigeo.com/s/AKfycbyCs54oS1GJZYNz3P9UGeJb0D9TJCP5a7KoUQuCA9Ky4RCl-lh8Tlw3mNzt5wUXiv_c/exec', {
-        method: 'POST',
-        mode: 'no-cors',  // Bypasses CORS restrictions, but limits response access
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email, timestamp: new Date().toISOString(), url: redirectUrl })
-    })
-    .then(() => {
-        // Redirect to the actual URL after the fetch request
-        window.location.href = redirectUrl;
-    })
-    .catch(err => console.error('Error logging click:', err));
-}
-
+        async function logClick(email, redirectUrl) {
+            try {
+                // Send data to Google Apps Script
+                await fetch('https://script.google.com/a/macros/edreamsodigeo.com/s/AKfycbyCs54oS1GJZYNz3P9UGeJb0D9TJCP5a7KoUQuCA9Ky4RCl-lh8Tlw3mNzt5wUXiv_c/exec', {
+                    method: 'POST',
+                    mode: 'no-cors',  // Bypasses CORS restrictions
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email, timestamp: new Date().toISOString(), url: redirectUrl })
+                });
+            } catch (err) {
+                console.error('Error logging click:', err);
+            } finally {
+                // Redirect to the actual URL after the fetch request
+                window.location.href = redirectUrl;
+            }
+        }
 
         // Get parameters from the URL
         const params = new URLSearchParams(window.location.search);
@@ -35,9 +46,6 @@ function logClick(email, redirectUrl) {
     </script>
 </head>
 <body>
-    <h1>Redirecting...</h1>
+    <!-- No text is displayed, just the background color -->
 </body>
 </html>
-
-
-
