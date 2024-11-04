@@ -6,26 +6,24 @@
     <title>Tracking Redirect</title>
     <script>
         // Function to log the click event
-        function logClick(email, redirectUrl) {
-            // Send data to Google Apps Script
-            fetch('https://script.google.com/a/macros/edreamsodigeo.com/s/AKfycbyCs54oS1GJZYNz3P9UGeJb0D9TJCP5a7KoUQuCA9Ky4RCl-lh8Tlw3mNzt5wUXiv_c/exec', { // Update with your deployed link
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    email: email, 
-                    timestamp: new Date().toISOString(),
-                    link: redirectUrl // Include the link if needed
-                })
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
-                // After logging, redirect to the actual URL
-                window.location.href = redirectUrl;
-            })
-            .catch(err => console.error('Error logging click:', err));
-        }
+
+function logClick(email, redirectUrl) {
+    // Send data to Google Apps Script
+    fetch('https://script.google.com/a/macros/edreamsodigeo.com/s/AKfycbyCs54oS1GJZYNz3P9UGeJb0D9TJCP5a7KoUQuCA9Ky4RCl-lh8Tlw3mNzt5wUXiv_c/exec', {
+        method: 'POST',
+        mode: 'no-cors',  // Bypasses CORS restrictions, but limits response access
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, timestamp: new Date().toISOString(), url: redirectUrl })
+    })
+    .then(() => {
+        // Redirect to the actual URL after the fetch request
+        window.location.href = redirectUrl;
+    })
+    .catch(err => console.error('Error logging click:', err));
+}
+
 
         // Get parameters from the URL
         const params = new URLSearchParams(window.location.search);
