@@ -1,23 +1,36 @@
-async function logClick(email, redirectUrl) {
-    try {
-        const response = await fetch('https://script.google.com/a/macros/edreamsodigeo.com/s/AKfycbzCdshoOgiKyllwcEKUb6cbsCvxkY8mFYp_rZbNkuyYFqfE9DQFvPdLRxQ264olbmcg/exec', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: email, timestamp: new Date().toISOString(), url: redirectUrl }),
-            mode: 'cors'  // Use 'cors' instead of 'no-cors'
-        });
-
-        if (response.ok) {
-            console.log('Click logged successfully.');
-        } else {
-            console.error('Failed to log click.');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script>
+        // Function to get URL parameter values
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
         }
-    } catch (err) {
-        console.error('Error logging click:', err);
-    } finally {
-        // Redirect to the actual URL after logging
-        window.location.href = redirectUrl;
-    }
-}
+
+        window.onload = function () {
+            const email = getUrlParameter('email'); // Get the email parameter
+            const redirectUrl = getUrlParameter('url'); // Get the target URL
+            
+            // Log click event to Google Analytics
+            if (email && redirectUrl) {
+                gtag('event', 'click', {
+                    'event_category': 'Redirect',
+                    'event_label': redirectUrl,
+                    'email': email
+                });
+                
+                // Redirect user to the target URL after logging the event
+                window.location.href = decodeURIComponent(redirectUrl); 
+            }
+        };
+    </script>
+</head>
+<body>
+    <p>Redirecting you to the requested page...</p>
+</body>
+</html>
+
