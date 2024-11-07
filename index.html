@@ -17,7 +17,6 @@
         })(window,document,'script','dataLayer','GTM-NJPBR3BD'); // Replace with your GTM ID
     </script>
     <!-- End Google Tag Manager -->
-
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -29,12 +28,6 @@
 
     <!-- Your existing redirect script goes here -->
     <script>
-        // Initialize Google Analytics 4 (GA4) with Google Tag Manager
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-E6ERRPBNXM');  // Replace with your GA4 Measurement ID
-
         // Function to get URL parameter values
         function getUrlParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -45,12 +38,13 @@
             const email = getUrlParameter('email'); // Get the email parameter
             const redirectUrl = getUrlParameter('url'); // Get the target URL
             
-            // Log click event to Google Analytics
+            // Log click event to Google Analytics via GTM
             if (email && redirectUrl) {
-                gtag('event', 'click', {
-                    'event_category': 'Redirect',
-                    'event_label': redirectUrl,
-                    'email': email
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'redirectClick',
+                    email: email,
+                    redirectUrl: decodeURIComponent(redirectUrl),
                 });
                 
                 // Redirect user to the target URL after logging the event
@@ -60,4 +54,3 @@
     </script>
 </body>
 </html>
-
