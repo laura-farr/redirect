@@ -17,11 +17,10 @@
         }
     </style>
     <script>
-        // Function to log the click event
+        // Function to log the click event and redirect
         async function logClick(email, redirectUrl) {
             try {
-                // Log that we are starting to send data
-                console.log("Sending log data for:", email, redirectUrl);
+                console.log('Attempting to log click for:', email, redirectUrl);
 
                 // Send data to Google Apps Script
                 const response = await fetch('https://script.google.com/a/macros/edreamsodigeo.com/s/AKfycbzCdshoOgiKyllwcEKUb6cbsCvxkY8mFYp_rZbNkuyYFqfE9DQFvPdLRxQ264olbmcg/exec', {
@@ -32,18 +31,17 @@
                     body: JSON.stringify({ email: email, timestamp: new Date().toISOString(), url: redirectUrl })
                 });
 
-                // Log the response for debugging
-                console.log("Response from server:", response);
-
+                // Check if the response is ok
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
 
-                console.log('Click logged successfully.');
+                // Log that the click was successfully logged
+                console.log('Click successfully logged.');
 
-                // Proceed to redirect after the fetch request completes
-                console.log("Redirecting to:", redirectUrl);
-                window.location.href = redirectUrl; // Redirect to the original URL
+                // Now, after the request completes, redirect to the actual destination
+                console.log('Redirecting to:', redirectUrl);
+                window.location.href = redirectUrl;
             } catch (err) {
                 console.error('Error logging click:', err);
             }
@@ -54,20 +52,20 @@
         const email = params.get('email');
         let redirectUrl = params.get('url');
 
-        // Decode the URL parameter once
+        // Decode the URL parameter once to ensure it's correctly formatted
         if (redirectUrl) {
-            redirectUrl = decodeURIComponent(redirectUrl); // Decode the URL here
+            redirectUrl = decodeURIComponent(redirectUrl);
         }
 
-        // Log the parameters to make sure they are correct
-        console.log("Email from URL:", email);
-        console.log("Redirect URL from URL:", redirectUrl);
+        // Log for debugging purposes
+        console.log('Email from URL:', email);
+        console.log('Redirect URL from URL:', redirectUrl);
 
-        // Log the click and redirect
+        // Ensure the parameters are valid before attempting to log the click and redirect
         if (email && redirectUrl) {
             logClick(email, redirectUrl);
         } else {
-            console.error("Missing email or redirect URL in the query parameters.");
+            console.error('Missing email or redirect URL in the query parameters.');
         }
     </script>
 </head>
@@ -75,4 +73,5 @@
     <h1>Redirecting...</h1>
 </body>
 </html>
+
 
