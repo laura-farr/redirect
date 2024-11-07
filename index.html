@@ -3,8 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Redirecting...</title>
+    
+    <!-- Include GA4 script -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E6ERRPBNXM"></script> <!-- Replace with your GA4 ID -->
+    
     <script>
+        // Initialize Google Analytics 4 (GA4)
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E6ERRPBNXM');  // Replace with your GA4 Measurement ID
+        
         // Function to get URL parameter values
         function getUrlParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -33,4 +43,3 @@
     <p>Redirecting you to the requested page...</p>
 </body>
 </html>
-
