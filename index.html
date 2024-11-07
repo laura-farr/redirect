@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
-    
-    <!-- Google Tag Manager (GTM) Script -->
+
+    <!-- Google Tag Manager -->
     <script>
         (function(w,d,s,l,i){
             w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -14,11 +14,12 @@
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
             j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
             f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-NJPBR3BD'); // Replace with your GTM ID
+        })(window,document,'script','dataLayer','GTM-NJPBR3BD'); // Use your GTM ID here
     </script>
     <!-- End Google Tag Manager -->
 </head>
 <body>
+
     <!-- Google Tag Manager (noscript) -->
     <noscript>
         <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJPBR3BD"
@@ -26,28 +27,12 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Your existing redirect script goes here -->
+    <!-- Your existing redirect script here -->
     <script>
-        // Function to get URL parameter values
-        function getUrlParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-
+        // Example redirect script
         window.onload = function () {
-            const email = getUrlParameter('email'); // Get the email parameter
-            const redirectUrl = getUrlParameter('url'); // Get the target URL
-            
-            // Log click event to Google Analytics via GTM
-            if (email && redirectUrl) {
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                    event: 'redirectClick',
-                    email: email,
-                    redirectUrl: decodeURIComponent(redirectUrl),
-                });
-                
-                // Redirect user to the target URL after logging the event
+            const redirectUrl = new URLSearchParams(window.location.search).get('url');
+            if (redirectUrl) {
                 window.location.href = decodeURIComponent(redirectUrl); 
             }
         };
